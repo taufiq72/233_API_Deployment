@@ -1,5 +1,6 @@
 const express = require("express");
-const connectDatabase = require("./config/db"); // atau impor penanganan db kamu
+const connectDatabase = require("./config/db");
+
 const app = express();
 
 app.use(express.json());
@@ -9,22 +10,24 @@ let databaseReady = false;
 let databasePromise = null;
 
 app.use(async (req, res, next) => {
-  try {
-    if (!databaseReady) {
-      if (!databasePromise) {
-        databasePromise = connectDatabase();
-      }
-      await databasePromise;
-      databaseReady = true;
+    try {
+        if (!databaseReady) {
+            if (!databasePromise) {
+                databasePromise = connectDatabase();
+            }
+
+            await databasePromise;
+            databaseReady = true;
+        }
+
+        next();
+    } catch (error) {
+        console.error("Database initialization failed:", error.message);
+        databasePromise = null;
+        return res.status(500).json({
+            message: "Database initialization failed."
+        });
     }
-    next();
-  } catch (error) {
-    console.error("Database initialization failed:", error.message);
-    databasePromise = null;
-    return res.status(500).json({
-      message: "Database initialization failed."
-    });
-  }
 });
 
 app.use("/api", require("./routes/api"));

@@ -7,7 +7,7 @@ const pg = require('pg');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, '../config/config.js'))[env];
+const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
 let sequelize;
@@ -15,7 +15,7 @@ let sequelize;
 if (config.use_env_variable) {
   const connectionUrl = process.env[config.use_env_variable];
   const url = new URL(connectionUrl);
-  
+
   url.searchParams.delete("sslmode");
 
   sequelize = new Sequelize(url.toString(), {
@@ -38,8 +38,7 @@ if (config.use_env_variable) {
   );
 }
 
-fs
-  .readdirSync(__dirname)
+fs.readdirSync(__dirname)
   .filter(file => {
     return (
       file.indexOf('.') !== 0 &&
