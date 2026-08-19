@@ -27,12 +27,14 @@ app.use(async (req, res, next) => {
         console.error('Database initialization failed:', error.message);
 
         databasePromise = null;
-    }
 
-    return res.status(500).json({ error: 'Database initialization failed' });
+    return res.status(500).json({ 
+        message: 'Database initialization failed'
+     });
+
+    }
 });
 
 
 app.use('/api', require('./routes/api'));
-
 module.exports = app;
