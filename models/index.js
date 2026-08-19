@@ -13,7 +13,7 @@ let sequelize;
 if (config.use_env_variable) {
   const connectionUrl = process.env[config.use_env_variable];
 
-  
+  const url = new URL(connectionUrl);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
