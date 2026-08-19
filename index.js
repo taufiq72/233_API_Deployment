@@ -28,16 +28,11 @@ app.use(async (req, res, next) => {
 
         databasePromise = null;
     }
+
+    return res.status(500).json({ error: 'Database initialization failed' });
 });
 
 
 app.use('/api', require('./routes/api'));
 
-async function startServer() {
-    await connectDatabase();
-    app.listen(PORT, () => {
-        console.log(`Server is running at http://localhost:${PORT}`);
-    });
-}
-
-startServer();
+module.exports = app;
