@@ -14,6 +14,18 @@ if (config.use_env_variable) {
   const connectionUrl = process.env[config.use_env_variable];
 
   const url = new URL(connectionUrl);
+
+  sequelize = new Sequelize(url.toString(), {
+    ...config,
+    dialect: "postgres",
+    dialectModule: pg,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+  });
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
