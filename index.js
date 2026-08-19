@@ -27,6 +27,8 @@ app.use(async (req, res, next) => {
         console.error('Database initialization failed:', error.message);
 
         databasePromise = null;
+    }
+});
 
 
 app.use('/api', require('./routes/api'));
