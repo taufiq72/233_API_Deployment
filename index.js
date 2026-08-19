@@ -11,6 +11,17 @@ app.use(express.urlencoded({ extended: true }));
 let databaseReady = false;
 let databasePromise = null;
 
+app.use(async (req, res, next) => {
+    try {
+        if (!databaseReady) {
+            if (!databasePromise) {
+                databasePromise = connectDatabase();
+            }
+
+            await databasePromise;
+            databaseReady = true;
+        }
+
 app.use('/api', require('./routes/api'));
 
 async function startServer() {
