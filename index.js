@@ -21,7 +21,8 @@ app.use(async (req, res, next) => {
             await databasePromise;
             databaseReady = true;
         }
-
+        next();
+    }
 app.use('/api', require('./routes/api'));
 
 async function startServer() {
